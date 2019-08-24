@@ -2,6 +2,10 @@
 #Michael Zabawa
 #Python Assignment 2 for NCSU
 
+from random import *
+import copy
+import csv
+
 def printBoard(board):
     count = 0
     for i in range(0, 9, 3):
@@ -17,6 +21,11 @@ def makeMark(board, position, mark):
     else:
         print("Choose a different position")
         return(False)
+        
+def computerMakeMark(board, position, mark):
+    if board[position] == "   ":
+        board[position] = mark
+        return(True)
 
 def checkWinner(board):
     if ((board[0] == board[3] == board[6]) and not board[6] == "   ") or ((board[1] == board[4] == board[7]) and not board[7]== "   ") or ((board[2] == board[5] == board[8])and not board[2] == "   "):
@@ -65,6 +74,49 @@ def humanMove(board, boardMark, player):
     return player
 
 ################################################################################
+def randomComputerMove(board, player):
+    position = randint(0,8)
+    boardMark = "   "
+    if player % 2 == 1:#gets Mark and sets score
+        boardMark = " O "
+    else:
+        boardMark = " X "
+    while not computerMakeMark(board, position, boardMark):
+        position = randint(0,9)
+    return player + 1
+
+################################################################################
+def makeGameData():
+    tic_tac_board = [-1] * 9
+    player = 0
+    boardMark = -1
+    winner = False
+    games = [""]
+    target = -1#assumes there is tie
+    while((player < 9) and not winner):
+        if player % 2 == 1:
+            boardMark = 0
+        else:
+            boardMark = 1
+        player = randomComputerMove(tic_tac_board, player)
+        games.append(tic_tac_board)
+        player = randomComputerMove(tic_tac_board, player)
+        games.append(tic_tac_board)
+        if player > 4:
+            winner = checkWinner(tic_tac_board)
+    if winner:
+        target = player % 2 # 0 or 1
+    else:
+        target  = -1
+    out = open("gameData.csv", "a")
+    for game in games:
+        out.write(game)
+        out.write(target)
+        out.write("\n")
+    out.close()
+
+makeGameData()
+################################################################################
 def computerMove(board, player):
     position = explore(score, player, board)
     makeMark(board, position, " O ")
@@ -90,13 +142,14 @@ def explore(player, board):
     for i in range(9):#Check eack position
         if board[i] == "   ":#Check if the position is already taken
             print(i)
-            newBoard = board#sets new board
+            newBoard = copy.deepcopy(board)#sets new board
             makeMark(newBoard, i, boardMark)#mutates newBoard with new mark
             movescore = -explore(player + 1, newBoard)#digs deeper
             if movescore > score:
                 score = movescore
                 move = i
     return score
+
 ################################################################################
 #testing for above functions 
 TestBoard = ["   "]*9
