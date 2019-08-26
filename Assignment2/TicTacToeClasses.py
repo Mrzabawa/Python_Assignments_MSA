@@ -1,4 +1,5 @@
-from random import * #for random moves 
+from random import * #for random moves
+
 ################################################################################
 #                           Board Class                                        #
 ################################################################################
@@ -110,18 +111,27 @@ class SmartComputerPlayer(ComputerPlayer):
 ################################################################################
 #                           Game Classes                                       #
 ################################################################################
-class __Game__():
+class Game():
     def __init__(self):
         self.tic_tac_toe_board = Tic_Tac_Toe_Board()
         self.winner = -1
-        self.moveList = []
+        self.moveList = [-1]*9
         self.move = 0
     
     def updateMoveList(self, position):
-        self.moveList.append(position)
+        self.moveList[self.move] = position
     
-    def printMoveList(self):
-        print(self.moveList)
+    def printMoveList(self, toFile = False):
+        if toFile:
+            out = open("gameData.csv", "a")
+            for i in range(9):
+                out.write(str(self.moveList[i]))
+                out.write(",")
+            out.write(str(self.winner))
+            out.write("\n")
+            out.close()
+        else:
+            print(self.moveList)
     
     def playGame(self):
         winnerFlag = False 
@@ -145,29 +155,39 @@ class __Game__():
         self.tic_tac_toe_board.printBoard()
         print(message)
 
-class TwoPlayerGame(__Game__):
+class TwoPlayerGame(Game):
     def __init__(self):
         super().__init__()
         self.player1 = HumanPlayer(" X ")
         self.player2 = HumanPlayer(" O ")
 
-class OnePlayerGame(__Game__):
+class OnePlayerGame(Game):
     def __init__(self):
         super().__init__()
         self.player1 = HumanPlayer(" X ")
         self.player2 = ComputerPlayer(" O ")
 
-class __NoPlayerGame__(__Game__):
+class NoPlayerGame(Game):
     def __init__(self):
         super().__init__()
         self.player1 = ComputerPlayer(" X ")
         self.player2 = ComputerPlayer(" O ")
     
-    #def getData(self):
-        #play game
-        #find winner
-        #write game to csv
-        
+    def playGame(self):
+        winnerFlag = False 
+        while( ( self.move < 9 ) and not winnerFlag):#go until there is a winner or board is full which ever is first
+            if self.move % 2 == 0:
+                choosenPosition = self.player1.move(self.tic_tac_toe_board)
+            else:
+                choosenPosition = self.player2.move(self.tic_tac_toe_board)
+            self.updateMoveList(choosenPosition)
+            self.move += 1 #next move
+            if(self.tic_tac_toe_board.checkWinner()): #check for winner
+                winnerFlag = True
+                self.winner = self.move % 2
+        if not (self.tic_tac_toe_board.checkWinner()):
+            self.winner = -1
+
 ################################################################################
 #still working on this 
 #still working  on this

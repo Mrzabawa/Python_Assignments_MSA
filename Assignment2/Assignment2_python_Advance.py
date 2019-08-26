@@ -26,9 +26,14 @@ def main():
 ################################################################################
 main()
 
+for i in range(100):
+    game = NoPlayerGame()
+    game.playGame()
+    game.printMoveList(True)
 
-game = TwoPlayerGame()
-game.playGame()
+game.tic_tac_toe_board.printBoard()
+
+7,3,5,2,0,8,1,4,6
 
 
 
