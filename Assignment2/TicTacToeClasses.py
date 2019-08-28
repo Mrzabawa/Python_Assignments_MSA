@@ -16,6 +16,7 @@ class Tic_Tac_Toe_Board:
                 print("-----------")
     
     def checkWinner(self):
+        #checks each case to see if there is a winner
         if ((self.board[0] == self.board[3] == self.board[6]) and not self.board[6] == "   ") or ((self.board[1] == self.board[4] == self.board[7]) and not self.board[7]== "   ") or ((self.board[2] == self.board[5] == self.board[8])and not self.board[2] == "   "):
             return True
         elif ((self.board[0] == self.board[1] == self.board[2])and not self.board[0] == "   ") or ((self.board[3] == self.board[4] == self.board[5])and not self.board[3] == "   ") or ((self.board[6] == self.board[7] == self.board[8])and not self.board[6] == "   "):
@@ -28,12 +29,12 @@ class Tic_Tac_Toe_Board:
 ################################################################################
 #                           Player Classes                                     #
 ################################################################################
-class __Player__:
+class Player:
     def __init__(self):
         self.marker = "   "
 
-################################################################################
-class HumanPlayer(__Player__):
+#################################################################
+class HumanPlayer(Player):
     def __init__(self, mark):
         self.marker = mark
     
@@ -77,8 +78,8 @@ class HumanPlayer(__Player__):
                 break
         return position
 
-################################################################################
-class ComputerPlayer(__Player__):
+#################################################################
+class ComputerPlayer(Player):
     def __init__(self, mark):
         self.marker = mark
     
@@ -95,7 +96,7 @@ class ComputerPlayer(__Player__):
             position = randint(0,8)
         return position
 
-################################################################################
+#################################################################
 class SmartComputerPlayer(ComputerPlayer):
     def __init__(self, mark):
         self.marker = mark
@@ -155,19 +156,20 @@ class Game():
         self.tic_tac_toe_board.printBoard()
         print(message)
 
+#################################################################
 class TwoPlayerGame(Game):
     def __init__(self):
         super().__init__()
         self.player1 = HumanPlayer(" X ")
         self.player2 = HumanPlayer(" O ")
-
+#################################################################
 class OnePlayerGame(Game):
     def __init__(self):
         super().__init__()
         self.player1 = HumanPlayer(" X ")
         self.player2 = ComputerPlayer(" O ")
-
-class NoPlayerGame(Game):
+#################################################################
+class NoPlayerGame(Game):#manily Used to generate data
     def __init__(self):
         super().__init__()
         self.player1 = ComputerPlayer(" X ")
@@ -187,74 +189,3 @@ class NoPlayerGame(Game):
                 self.winner = self.move % 2
         if not (self.tic_tac_toe_board.checkWinner()):
             self.winner = -1
-
-################################################################################
-#still working on this 
-#still working  on this
-################################################################################
-# def makeGameData():
-#     tic_tac_board = [-1] * 9
-#     player = 0
-#     boardMark = -1
-#     winner = False
-#     games = [""]
-#     target = -1#assumes there is tie
-#     while((player < 9) and not winner):
-#         if player % 2 == 1:
-#             boardMark = 0
-#         else:
-#             boardMark = 1
-#         player = randomComputerMove(tic_tac_board, player)
-#         games.append(tic_tac_board)
-#         player = randomComputerMove(tic_tac_board, player)
-#         games.append(tic_tac_board)
-#         if player > 4:
-#             winner = checkWinner(tic_tac_board)
-#     if winner:
-#         target = player % 2 # 0 or 1
-#     else:
-#         target  = -1
-#     out = open("gameData.csv", "a")
-#     for game in games:
-#         out.write(game)
-#         out.write(target)
-#         out.write("\n")
-#     out.close()
-# 
-# makeGameData()
-# ################################################################################
-# def computerMove(board, player):
-#     position = explore(score, player, board)
-#     makeMark(board, position, " O ")
-#     return player + 1
-# 
-# def explore(player, board):
-#     score = 0
-#     #Check for  a winner
-#     if checkWinner(board):
-#         if player % 2 == 1:#gets Mark and sets score
-#             score = 1
-#         else:
-#             score = -1
-#     move = -1
-#     score = -2
-#     if player % 2 == 1:#gets Mark and sets score
-#         boardMark = " O "
-#     else:
-#         boardMark = " X "
-#     printBoard(TestBoard)
-#     print(score)
-#     #if not a winner dig deeper
-#     for i in range(9):#Check eack position
-#         if board[i] == "   ":#Check if the position is already taken
-#             print(i)
-#             newBoard = copy.deepcopy(board)#sets new board
-#             makeMark(newBoard, i, boardMark)#mutates newBoard with new mark
-#             movescore = -explore(player + 1, newBoard)#digs deeper
-#             if movescore > score:
-#                 score = movescore
-#                 move = i
-#     return score
-# 
-# 
-# 

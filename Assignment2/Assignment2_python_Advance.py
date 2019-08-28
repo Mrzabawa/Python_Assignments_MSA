@@ -26,18 +26,26 @@ def main():
 ################################################################################
 main()
 
+################################################################################
+#Generate Game Data
 for i in range(100):
     game = NoPlayerGame()
     game.playGame()
     game.printMoveList(True)
+    
+import pandas as pd
+from sklearn.naive_bayes import MultinomialNB
+data = pd.read_csv("gameData.csv")
+X = data.iloc[:, 0:9]
+y = data.loc[:,'WINNER']
+clf = MultinomialNB()
+clf.fit(X, y)
+MultinomialNB(alpha=1.0, class_prior=None, fit_prior=True)
+print(clf.predict(X[2:3]))
 
-game.tic_tac_toe_board.printBoard()
-
-7,3,5,2,0,8,1,4,6
-
-
-
-
+from sklearn.linear_model import LogisticRegression
+clf = LogisticRegression(random_state=0, solver='lbfgs',multi_class='multinomial').fit(X, y)
+clf.get_params()
 
 
 
