@@ -169,7 +169,7 @@ class OnePlayerGame(Game):
         self.player1 = HumanPlayer(" X ")
         self.player2 = ComputerPlayer(" O ")
 #################################################################
-class NoPlayerGame(Game):#manily Used to generate data
+class NoPlayerGame(Game):#Used to generate data
     def __init__(self):
         super().__init__()
         self.player1 = ComputerPlayer(" X ")
