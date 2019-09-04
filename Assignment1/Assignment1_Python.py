@@ -45,21 +45,24 @@ out.write("City, Min 1, Max 1, Min 2, Max 2, Min 3, Max 3, Min 4, Max 4, Min 5, 
 out.write("\r\n")
 #decomposes temps by location, adds average temps and stores in temps.csv
 for local in temps:
+    #create Array to store min and max temps for average
     minTemps = [0]*5
     maxTemps = [0]*5
+    #write out city
     out.write('"' + str(local) + '"')
     out.write(',')
-    for day in range( 1, 6):
+    #Get Forecast for each city
+    for day in range( 2, 7):
         val = temps[local].get( day )
         min = val[ 'temperatureMin' ]
         max = val[ 'temperatureMax' ]
-        out.write( str("%3.2f "% min))
-        out.write(',')
-        out.write( str("%3.2f "% max))
-        out.write(',')
-        minTemps[day-1] = float(val[ 'temperatureMin' ])
+        out.write( str("%3.2f "% min))#Write out min and set format to exactly 2 dec
+        out.write(',')#for csv
+        out.write( str("%3.2f "% max))#Write out max and set format to 2 dec
+        out.write(',')#for csv
+        minTemps[day-1] = float(val[ 'temperatureMin' ])#store min and max for average
         maxTemps[day-1] = float(val[ 'temperatureMax' ])
-    avgMin = round(((minTemps[0]+minTemps[1]+minTemps[2]+minTemps[3]+minTemps[4]) / 5),2)
+    avgMin = round(((minTemps[0]+minTemps[1]+minTemps[2]+minTemps[3]+minTemps[4]) / 5),2)#compute average
     avgMax = round(((maxTemps[0]+maxTemps[1]+maxTemps[2]+maxTemps[3]+maxTemps[4])/ 5),2)
     out.write(str("%3.2f "%avgMin))
     out.write(',')
