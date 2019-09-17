@@ -39,7 +39,7 @@ for loc in locations:
 
 ##########################################################################################################
 #open File
-out = open( '/Users/michaelzabawa/Documents/temp.csv', 'a')
+out = open( 'temp.csv', 'a')
 #outputs header
 out.write("City, Min 1, Max 1, Min 2, Max 2, Min 3, Max 3, Min 4, Max 4, Min 5, Max 5, Min Avg, Max Avg")
 out.write("\r\n")
@@ -56,17 +56,22 @@ for local in temps:
         val = temps[local].get( day )
         min = val[ 'temperatureMin' ]
         max = val[ 'temperatureMax' ]
-        out.write( str("%3.2f "% min))#Write out min and set format to exactly 2 dec
+        out.write( str("% .2f "% min))#Write out min and set format to exactly 2 dec
         out.write(',')#for csv
-        out.write( str("%3.2f "% max))#Write out max and set format to 2 dec
+        out.write( str("% .2f "% max))#Write out max and set format to 2 dec
         out.write(',')#for csv
-        minTemps[day-1] = float(val[ 'temperatureMin' ])#store min and max for average
-        maxTemps[day-1] = float(val[ 'temperatureMax' ])
-    avgMin = round(((minTemps[0]+minTemps[1]+minTemps[2]+minTemps[3]+minTemps[4]) / 5),2)#compute average
-    avgMax = round(((maxTemps[0]+maxTemps[1]+maxTemps[2]+maxTemps[3]+maxTemps[4])/ 5),2)
+        minTemps[day-2] = float(val[ 'temperatureMin' ])#store min and max for average
+        maxTemps[day-2] = float(val[ 'temperatureMax' ])
+    avgMin = ((minTemps[0]+minTemps[1]+minTemps[2]+minTemps[3]+minTemps[4]) / 5.0)#compute average
+    avgMax = ((maxTemps[0]+maxTemps[1]+maxTemps[2]+maxTemps[3]+maxTemps[4]) / 5.0)
     out.write(str("%3.2f "%avgMin))
     out.write(',')
     out.write(str("%3.2f "%avgMax))
     out.write("\n")
 
 out.close()
+
+
+
+
+
